@@ -5,21 +5,22 @@ codeunit 50100 "Item Price Mgt."
         Item: Record Item;
         UserSetup: Record "User Setup";
         GLSetup: Record "General Ledger Setup";
-        ExchRate: Record "Currency Exchange Rate";
+        Converter: Codeunit "BC Converter";
     begin
         Item.Get(ItemNo);
-        UnitPrice := Item."Unit Price";
-
-        if not UserSetup.Get(UserId) then
-            exit;
-
-        if UserSetup."Currency Code" = '' then
-            exit;
-
+        UserSetup.Get(UserId);
         GLSetup.Get();
-        if GLSetup."LCY Code" = UserSetup."Currency Code" then
-            exit;
+        UnitPrice := GetItemPriceInCurrency(Item."Unit Price", UserSetup."Currency Code", GLSetup."LCY Code", WorkDate(), Converter);
+    end;
 
-        UnitPrice := ExchRate.ExchangeAmtLCYToFCY(WorkDate(), UserSetup."Currency Code", UnitPrice, 1);
+    internal procedure GetItemPriceInCurrency(UnitPrice: Decimal; UserCurrencyCode: Code[10]; LCYCode: Code[10]; AtDate: Date; Converter: Interface IConverter): Decimal
+    begin
+        if UserCurrencyCode = '' then
+            exit(UnitPrice);
+
+        if LCYCode = UserCurrencyCode then
+            exit(UnitPrice);
+
+        exit(Converter.Convert(UnitPrice, UserCurrencyCode, AtDate));
     end;
 }
