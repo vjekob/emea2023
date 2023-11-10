@@ -70,7 +70,7 @@ codeunit 50141 "Test PurchaseInvHeaderEdit"
         // Assert
         Assert.IsTrue(MockEdit.IsPurchInvHeaderModified(), 'Purch. Inv. Header not modified');
         Assert.IsFalse(MockEdit.IsVendorEntryEditCalled(), 'Vendor Ledger Entry should not be modified');
-        Assert.IsFalse(MockEdit.IsVendorEntryEditCalled(), 'Vendor edit should not be run');
+        Assert.IsFalse(MockEdit.IsEditVendorLedgerEntryCalled(), 'Vendor edit should not be run');
     end;
 
     [Test]
@@ -89,7 +89,7 @@ codeunit 50141 "Test PurchaseInvHeaderEdit"
         // Assert
         Assert.IsTrue(MockEdit.IsPurchInvHeaderModified(), 'Purch. Inv. Header not modified');
         Assert.IsTrue(MockEdit.IsVendorEntryEditCalled(), 'Vendor edit should be run');
-        Assert.IsTrue(MockEdit.IsVendorEntryEditCalled(), 'Vendor Ledger Entry should be modified');
+        Assert.IsTrue(MockEdit.IsEditVendorLedgerEntryCalled(), 'Vendor Ledger Entry should be modified');
     end;
 
 }

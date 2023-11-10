@@ -45,9 +45,10 @@ codeunit 50102 PurchInvHeaderEdit implements IPurchInvHeaderEdit
     begin
         Edit.FindPurchInvHeader(PurchInvHeader, Rec);
         Edit.EditPurchInvHeader(PurchInvHeader, Rec);
-        Edit.ModifyPurchInvHeader(PurchInvHeader, Rec);
 
         OnBeforePurchInvHeaderModify(PurchInvHeader, Rec);
+        Edit.ModifyPurchInvHeader(PurchInvHeader, Rec);
+
         Rec.Copy(PurchInvHeader);
 
         UpdateVendorLedgerEntry(Rec, Edit);
